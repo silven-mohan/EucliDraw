@@ -23,3 +23,36 @@ Hexagon
 Octagon
 
 …and more!
+## 🔄 Recent Updates to EucliDraw
+
+### 🧩 GUI Enhancements
+- Introduced a menu bar to provide more control and customization:
+  - **Canvas**
+    - Clear Canvas
+  - **Visibility of Pointer**
+    - Show Pointer
+    - Hide Pointer
+  - **Appearance of Pointer**
+    - Classic
+    - Arrow
+    - Turtle
+    - Square
+    - Triangle
+    - Circle
+- Added a **Start Drawing** button to begin shape rendering
+
+### 🐢 Embedded Turtle Graphics
+- Turtle graphics now run inside the GUI canvas window
+- Real-time feedback and visualization within the EucliDraw interface
+
+### 📧 Error Reporting System
+- If a user enters an invalid shape or incorrect input:
+  - The app displays an error message
+  - An automatic email report is generated
+    - Includes which input field triggered the error
+    - Logs user-entered data for troubleshooting
+
+### 🎯 Other Improvements
+- Smoother UX with more intuitive interactions
+- Bug fixes and logic refinements to support the expanded GUI
+
