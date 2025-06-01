@@ -1,356 +1,481 @@
-from turtle import*
-speed(0)
+import tkinter as tk
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from tkinter import Menu
+from tkinter import simpledialog
+from tkinter import messagebox
+from turtle import RawTurtle, ScrolledCanvas
+#Turtle's Actions and Shapes
+def clear_canvas():
+    t.clear()
+def hide_turtle():
+    t.hideturtle()
+def show_turtle():
+    t.showturtle()
+def shape_circle():
+    t.shape("circle")
+def shape_arrow():
+    t.shape("arrow")
+def shape_triangle():
+    t.shape("triangle")
+def shape_square():
+    t.shape("square")
+def shape_turtle():
+    t.shape("turtle")
+def shape_classic():
+    t.shape("classic")
+def main():
+    user_input()
+    shape_loop()
+#Tkinter
+root=tk.Tk()
+root.title("EucliDraw")
+dialog_root= tk.Tk()
+dialog_root.withdraw()
+menu_bar=Menu(root)
+#Turtle Canvas inside the Tkinter GUI
+canvas_frame = tk.Frame(root)
+canvas_frame.pack(fill="both", expand=True)
+
+turtle_canvas = ScrolledCanvas(canvas_frame)
+turtle_canvas.pack(fill="both", expand=True)
+
+t= RawTurtle(turtle_canvas)
+t.speed(0)
+#Clear Canvas
+canvas_menu=Menu(menu_bar, tearoff=0)
+canvas_menu.add_command(label="Clear Canvas", command=clear_canvas)
+menu_bar.add_cascade(label="Canvas", menu=canvas_menu)
+#Visibility of Pointer
+pointer_visibility_menu=Menu(menu_bar, tearoff=0)
+pointer_visibility_menu.add_command(label="Hide Pointer", command=hide_turtle)
+pointer_visibility_menu.add_command(label="Show Pointer", command=show_turtle)
+menu_bar.add_cascade(label="Visibility of Pointer", menu=pointer_visibility_menu)
+#Appearance of Pointer
+pointer_appearance_menu=Menu(menu_bar, tearoff=0)
+pointer_appearance_menu.add_command(label="Classic", command=shape_classic)
+pointer_appearance_menu.add_command(label="Circle", command=shape_circle)
+pointer_appearance_menu.add_command(label="Arrow", command=shape_arrow)
+pointer_appearance_menu.add_command(label="Triangle", command=shape_triangle)
+pointer_appearance_menu.add_command(label="Square", command=shape_square)
+pointer_appearance_menu.add_command(label="Turtle", command=shape_turtle)
+menu_bar.add_cascade(label="Appearance of Pointer", menu=pointer_appearance_menu)
+#Start Drawing
+menu_bar.add_command(label="Start", command=main)
+
+root.config(menu=menu_bar)
+
+
 def equilateral_triangle():
     for i in range(3):
-        seth(i*120)
-        fd(100)
+        t.seth(i*120)
+        t.fd(100)
 def square():
     for i in range(4):
-        seth(i*90)
-        fd(100)
+        t.seth(i*90)
+        t.fd(100)
 def rectangle():
     for i in range(4):
         angle=i*90
-        seth(angle)
+        t.seth(angle)
         if 0<=angle<90 or 180<=angle<270:
-            fd(100)
+            t.fd(100)
         if 90<=angle<180 or 270<=angle<360:
-            fd(50)
+            t.fd(50)
 def rhombus():
     for i in range(4):
-        seth(45+(i*90))
-        fd(100)
+        t.seth(45+(i*90))
+        t.fd(100)
 def parallelogram():
     for i in range(4):
         angle=i*90
         if 90<=angle<180 or 270<=angle<360:
-            seth(angle-15)
+            t.seth(angle-15)
         else:
-            seth(angle)
-        fd(100)
+            t.seth(angle)
+        t.fd(100)
 def trapezium():
-    seth(0)
-    fd(140)
-    seth(90+15)
-    fd(100)
-    seth(180)
-    fd(90)
-    seth(270-15)
-    fd(100)
+    t.seth(0)
+    t.fd(140)
+    t.seth(90+15)
+    t.fd(100)
+    t.seth(180)
+    t.fd(90)
+    t.seth(270-15)
+    t.fd(100)
 def kite():
-    seth(48)
-    fd(100)
-    seth(125)
-    fd(62.5)
-    seth(215)
-    fd(62.5)
-    seth(280)
-    fd(100)
+    t.seth(48)
+    t.fd(100)
+    t.seth(125)
+    t.fd(62.5)
+    t.seth(215)
+    t.fd(62.5)
+    t.seth(280)
+    t.fd(100)
 def circle():
     for i in range(360):
-        seth(i)
-        fd(1)
+        t.seth(i)
+        t.fd(1)
 def right_angled_triangle():
     for i in range(3):
-        seth(i*135)
+        t.seth(i*135)
         if i==0:
-            fd(100)
+            t.fd(100)
         if i==1:
-            fd(141.42)
+            t.fd(141.42)
         if i==2:
-            fd(100)
+            t.fd(100)
             
 def pentagon():
     for i in range(5):
         angle=360/5
-        seth((i+1)*angle)
-        fd(100)
+        t.seth((i+1)*angle)
+        t.fd(100)
 def hexagon():
     for i in range(6):
         angle=360/6
-        seth((i+1)*angle)
-        fd(100)
+        t.seth((i+1)*angle)
+        t.fd(100)
 def heptagon():
     for i in range(7):
         angle=360/7
-        seth((i+1)*angle)
-        fd(100)
+        t.seth((i+1)*angle)
+        t.fd(100)
 def octagon():
     for i in range(8):
         angle=360/8
-        seth((i+1)*angle)
-        fd(100)
+        t.seth((i+1)*angle)
+        t.fd(100)
 def nonagon():
     for i in range(9):
         angle=360/9
-        seth((i+1)*angle)
-        fd(100)
+        t.seth((i+1)*angle)
+        t.fd(100)
 def decagon():
     for i in range(10):
         angle=360/10
-        seth((i+1)*angle)
-        fd(100)
+        t.seth((i+1)*angle)
+        t.fd(100)
 def hendecagon():
     for i in range(11):
         angle=(360/11)
-        seth((i+1)*angle)
-        fd(50)
+        t.seth((i+1)*angle)
+        t.fd(50)
 def dodecagon():
     for i in range(12):
         angle=360/12
-        seth((i+1)*angle)
-        fd(50)
+        t.seth((i+1)*angle)
+        t.fd(50)
 def scalene_triangle():
-    seth(135)
-    fd(100)
-    seth(345)
-    fd(220)
-    seth(185)
-    fd(145)
+    t.seth(135)
+    t.fd(100)
+    t.seth(345)
+    t.fd(220)
+    t.seth(185)
+    t.fd(145)
 def isosceles_triangle():
-    seth(0)
-    fd(180)
-    seth(135)
-    fd(130)
-    seth(225)
-    fd(130)
+    t.seth(0)
+    t.fd(180)
+    t.seth(135)
+    t.fd(130)
+    t.seth(225)
+    t.fd(130)
 def obtuse_triangle():
-    fd(200)
-    seth(130)
-    fd(260)
-    seth(260)
-    fd(204)
+    t.fd(200)
+    t.seth(130)
+    t.fd(260)
+    t.seth(260)
+    t.fd(204)
 def isosceles_obtuse_triangle():
-    fd(100)
-    seth(30)
-    fd(100)
-    seth(195)
-    fd(195)  
+    t.fd(100)
+    t.seth(30)
+    t.fd(100)
+    t.seth(195)
+    t.fd(195)  
 def semicircle():
-    seth(0)
-    fd(115)
+    t.seth(0)
+    t.fd(115)
     for i in range(90,271,1):
-        seth(i)
-        fd(1)
+        t.seth(i)
+        t.fd(1)
 def vertical_ellipse():
     for i in range(360):
-        seth(i)
+        t.seth(i)
         if 0<=i<35 or 145<=i<180 or 180<=i<215 or 325<=i<360:
-            fd(1)
+            t.fd(1)
         if 35<=i<45 or 135<=i<145 or 215<=i<225 or 315<=i<325:
-            fd(1.5)
+            t.fd(1.5)
         if 45<=i<60 or 120<=i<135 or 225<=i<240 or 300<=i<315:
-            fd(2)
+            t.fd(2)
         if 60<=i<90 or 90<=i<120 or 240<=i<270 or 270<=i<300:
-            fd(3)
+            t.fd(3)
 def horizontal_ellipse():
     for i in range(90,451,1):
-        seth(i)
+        t.seth(i)
         if 90<=i<125 or 235<=i<270 or 270<=i<305:
-            fd(1)
+            t.fd(1)
         if 125<=i<135 or 225<=i<235 or 305<=i<315 or 405<=i<415:
-            fd(1.5)
+            t.fd(1.5)
         if 135<=i<150 or 210<=i<225 or 315<=i<330 or 390<i<405:
-            fd(2)
+            t.fd(2)
         if 150<=i<180 or 180<=i<210 or 330<=i<360 or 360<=i<390:
-            fd(3)
+            t.fd(3)
         if 415<=i<450:
-            fd(1.25)
+            t.fd(1.25)
 def user_input():
-    text_input=input("Which shape do you want me to draw?").lower().strip().replace("_"," ").replace(",","").replace(".","")
+    text_input=simpledialog.askstring("Enter the name of the shape you want:","Which shape do you want me to draw?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+    global body
     if text_input=="circle":
         circle()
-    if text_input=="equilateraltriangle":
+    elif text_input=="equilateraltriangle" or text_input=="equilateral":
         equilateral_triangle()
-    if text_input=="square":
+    elif text_input=="square":
         square()
-    if text_input=="rectangle":
+    elif text_input=="rectangle":
         rectangle()
-    if text_input=="rhombus":
+    elif text_input=="rhombus":
         rhombus()
-    if text_input=="parallelogram":
+    elif text_input=="parallelogram":
         parallelogram()
-    if text_input=="trapezium":
+    elif text_input=="trapezium":
         trapezium()
-    if text_input=="kite":
+    elif text_input=="kite":
         kite()
-    if text_input=="pentagon":
+    elif text_input=="pentagon":
         pentagon()
-    if text_input=="hexagon":
+    elif text_input=="hexagon":
         hexagon()
-    if text_input=="heptagon":
+    elif text_input=="heptagon":
         heptagon()
-    if text_input=="octagon":
+    elif text_input=="octagon":
         octagon()
-    if text_input=="nonagon":
+    elif text_input=="nonagon":
         nonagon()
-    if text_input=="decagon":
+    elif text_input=="decagon":
         decagon()
-    if text_input=="rightangledtriangle" or text_input=="rightangletriangle" or text_input=="righttriangle":
+    elif text_input=="rightangledtriangle" or text_input=="rightangletriangle" or text_input=="righttriangle":
         right_angled_triangle()
-    if text_input=="scalenetriangle":
+    elif text_input=="scalenetriangle":
         scalene_triangle()
-    if text_input=="isoscelestriangle":
+    elif text_input=="isoscelestriangle":
         isosceles_triangle()
-    if text_input=="semicircle":
+    elif text_input=="semicircle":
         semicircle()
-    if text_input=="isoscelesrightangledtriangle" or text_input=="isoscelesrightangletriangle" or text_input=="isoscelesrighttriangle":
+    elif text_input=="isoscelesrightangledtriangle" or text_input=="isoscelesrightangletriangle" or text_input=="isoscelesrighttriangle":
         right_angled_triangle()
-    if text_input=="acutetriangle":
+    elif text_input=="acutetriangle":
         equilateral_triangle()
-    if text_input=="isoscelesacutetriangle" or text_input=="acuteisoscelestriangle":
+    elif text_input=="isoscelesacutetriangle" or text_input=="acuteisoscelestriangle":
         isosceles_triangle()
-    if text_input=="scaleneacutetriangle" or text_input=="acutescalenetriangle":
+    elif text_input=="scaleneacutetriangle" or text_input=="acutescalenetriangle":
         scalene_triangle()
-    if text_input=="obtusetriangle":
+    elif text_input=="obtusetriangle":
         obtuse_triangle()
-    if text_input=="scaleneobtusetriangle" or text_input=="obtusescalenetriangle":
+    elif text_input=="scaleneobtusetriangle" or text_input=="obtusescalenetriangle":
         obtuse_triangle()
-    if text_input=="isoscelesobtusetriangle" or text_input=="obtuseisoscelestriangle":
+    elif text_input=="isoscelesobtusetriangle" or text_input=="obtuseisoscelestriangle":
         isosceles_obtuse_triangle()
-    if text_input=="verticalellipse":
+    elif text_input=="verticalellipse":
         vertical_ellipse()
-    if text_input=="horizontalellipse":
+    elif text_input=="horizontalellipse":
         horizontal_ellipse()
-    if text_input=="ellipse":
-        ellipse_input=input("Which kind of Ellipse you want me to draw."
-                            "Is it vertical(Major axis:vertical &  Minor axis:horizontal) or horizontal(Major axis:horizontal & Minor axis:vertical)"
-                            "Type Vertical for Vertical Ellipse or Horizontal for Horizontal Ellipse").lower().strip().replace("_"," ").replace(",","").replace(".","")
+    elif text_input=="ellipse":
+        ellipse_input=simpledialog.askstring("Enter the type of the ellipse:","Which kind of Ellipse you want me to draw.\nIs it vertical(Major axis:vertical &  Minor axis:horizontal) or horizontal(Major axis:horizontal & Minor axis:vertical)\nType Vertical for Vertical Ellipse or Horizontal for Horizontal Ellipse", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
         if ellipse_input=="vertical":
             vertical_ellipse()
-        if ellipse_input=="horizontal":
+        elif ellipse_input=="horizontal":
             horizontal_ellipse()
-    if text_input=="triangle":
-        triangle_input=input("Which kind of Triangle you want me to draw?"
-                             "Enter the type of triangle you wnat me to draw")
-        if triangle_input == "rightangledtriangle" or triangle_input == "rightangletriangle" or triangle_input == "righttriangle":
+        else:
+            messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
+            body=f"Error in ellipse input: {ellipse_input}"
+            send_shape_error_report_email()
+    elif text_input=="triangle":
+        triangle_input=simpledialog.askstring("Enter the type of triangle:","Which kind of Triangle you want me to draw?/nEnter the type of triangle you wnat me to draw", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+        if triangle_input == "rightangledtriangle" or triangle_input == "rightangletriangle" or triangle_input == "righttriangle" or triangle_input=="rightangle" or triangle_input=="rightangled":
             right_angled_triangle()
-        if triangle_input == "scalenetriangle":
+        elif triangle_input == "scalenetriangle" or triangle_input=="scalene":
             scalene_triangle()
-        if triangle_input == "isoscelestriangle":
+        elif triangle_input == "isoscelestriangle" or triangle_input=="isosceles":
             isosceles_triangle()
-        if triangle_input == "isoscelesrightangledtriangle" or triangle_input == "isoscelesrightangletriangle" or triangle_input == "isoscelesrighttriangle":
+        elif triangle_input == "isoscelesrightangledtriangle" or triangle_input == "isoscelesrightangletriangle" or triangle_input == "isoscelesrighttriangle" or triangle_input=="isoscelesrightangle" or triangle_input=="isoscelesrightangled":
             right_angled_triangle()
-        if triangle_input == "acutetriangle":
+        elif triangle_input == "acutetriangle" or triangle_input=="acute":
             equilateral_triangle()
-        if triangle_input == "isoscelesacutetriangle" or triangle_input == "acuteisoscelestriangle":
+        elif triangle_input == "isoscelesacutetriangle" or triangle_input == "acuteisoscelestriangle" or triangle_input=="isoscelesacute" or triangle_input=="acuteisosceles":
             isosceles_triangle()
-        if triangle_input == "scaleneacutetriangle" or triangle_input == "acutescalenetriangle":
+        elif triangle_input == "scaleneacutetriangle" or triangle_input == "acutescalenetriangle" or triangle_input == "scaleneacute" or triangle_input == "acutescalene":
             scalene_triangle()
-        if triangle_input == "obtusetriangle":
+        elif triangle_input == "obtusetriangle" or triangle_input== "obtuse":
             obtuse_triangle()
-        if triangle_input == "scaleneobtusetriangle" or triangle_input == "obtusescalenetriangle":
+        elif triangle_input == "scaleneobtusetriangle" or triangle_input == "obtusescalenetriangle" or triangle_input == "scaleneobtuse" or triangle_input == "obtusescalene":
             obtuse_triangle()
-        if triangle_input == "isoscelesobtusetriangle" or triangle_input == "obtuseisoscelestriangle":
+        elif triangle_input == "isoscelesobtusetriangle" or triangle_input == "obtuseisoscelestriangle" or triangle_input == "isoscelesobtuse" or triangle_input == "obtuseisosceles":
             isosceles_obtuse_triangle()
-        if triangle_input == "equilateraltriangle":
+        elif triangle_input == "equilateraltriangle" or triangle_input == "equilateral":
             equilateral_triangle()
-    if text_input=="hendecagon":
+        else:
+            messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
+            body=f"Error in triangle input: {triangle_input}"
+            send_shape_error_report_email()
+    elif text_input=="hendecagon":
         hendecagon()
-    if text_input=="dodecagon":
+    elif text_input=="dodecagon":
         dodecagon()
-user_input()
-
-while True:
-    txtloop_input=input("What do you want me to draw next?").lower().strip().replace("_"," ").replace(",","").replace(".","")
-    if txtloop_input=="circle":
-        circle()
-    if txtloop_input=="equilateraltriangle":
-        equilateral_triangle()
-    if txtloop_input=="square":
-        square()
-    if txtloop_input=="rectangle":
-        rectangle()
-    if txtloop_input=="rhombus":
-        rhombus()
-    if txtloop_input=="parallelogram":
-        parallelogram()
-    if txtloop_input=="trapezium":
-        trapezium()
-    if txtloop_input=="kite":
-        kite()
-    if txtloop_input=="pentagon":
-        pentagon()
-    if txtloop_input=="hexagon":
-        hexagon()
-    if txtloop_input=="heptagon":
-        heptagon()
-    if txtloop_input=="octagon":
-        octagon()
-    if txtloop_input=="nonagon":
-        nonagon()
-    if txtloop_input=="decagon":
-        decagon()
-    if txtloop_input=="rightangledtriangle" or txtloop_input=="rightangletriangle" or txtloop_input=="righttriangle":
-        right_angled_triangle()
-    if txtloop_input=="scalenetriangle":
-        scalene_triangle()
-    if txtloop_input=="isoscelestriangle":
-        isosceles_triangle()
-    if txtloop_input=="semicircle":
-        semicircle()
-    if txtloop_input=="isoscelesrightangledtriangle" or txtloop_input=="isoscelesrightangletriangle" or txtloop_input=="isoscelesrighttriangle":
-        right_angled_triangle()
-    if txtloop_input=="acutetriangle":
-        equilateral_triangle()
-    if txtloop_input=="isoscelesacutetriangle" or txtloop_input=="acuteisoscelestriangle":
-        isosceles_triangle()
-    if txtloop_input=="scaleneacutetriangle" or txtloop_input=="acutescalenetriangle":
-        scalene_triangle()
-    if txtloop_input=="obtusetriangle":
-        obtuse_triangle()
-    if txtloop_input=="scaleneobtusetriangle" or txtloop_input=="obtusescalenetriangle":
-        obtuse_triangle()
-    if txtloop_input=="isoscelesobtusetriangle" or txtloop_input=="obtuseisoscelestriangle":
-        isosceles_obtuse_triangle()
-    if txtloop_input=="verticalellipse":
-        vertical_ellipse()
-    if txtloop_input=="horizontalellipse":
-        horizontal_ellipse()
-    if txtloop_input=="ellipse":
-        ellipse_input=input("Which kind of Ellipse do you want me to draw? "
-                        "Is it vertical (Major axis: vertical & Minor axis: horizontal) or horizontal "
-                        "(Major axis: horizontal & Minor axis: vertical)? "
-                        "Type 'vertical' for Vertical Ellipse or 'horizontal' for Horizontal Ellipse: ").lower().strip().replace("_"," ").replace(",","").replace(".","")
-        if ellipse_input=="vertical":
-            vertical_ellipse()
-        if ellipse_input=="horizontal":
-            horizontal_ellipse()
-    if txtloop_input=="triangle":
-        triangle_input=input("Which kind of Triangle do you want me to draw? Enter the type: ").lower().strip().replace("_"," ").replace(",","").replace(".","")
-        if triangle_input == "rightangledtriangle" or triangle_input == "rightangletriangle" or triangle_input == "righttriangle":
-            right_angled_triangle()
-        if triangle_input == "scalenetriangle":
-            scalene_triangle()
-        if triangle_input == "isoscelestriangle":
-            isosceles_triangle()
-        if triangle_input == "isoscelesrightangledtriangle" or triangle_input == "isoscelesrightangletriangle" or triangle_input == "isoscelesrighttriangle":
-            right_angled_triangle()
-        if triangle_input == "acutetriangle":
-            equilateral_triangle()
-        if triangle_input == "isoscelesacutetriangle" or triangle_input == "acuteisoscelestriangle":
-            isosceles_triangle()
-        if triangle_input == "scaleneacutetriangle" or triangle_input == "acutescalenetriangle":
-            scalene_triangle()
-        if triangle_input == "obtusetriangle":
-            obtuse_triangle()
-        if triangle_input == "scaleneobtusetriangle" or triangle_input == "obtusescalenetriangle":
-            obtuse_triangle()
-        if triangle_input == "isoscelesobtusetriangle" or triangle_input == "obtuseisoscelestriangle":
-            isosceles_obtuse_triangle()
-        if triangle_input == "equilateraltriangle":
-            equilateral_triangle()
-    if txtloop_input=="hendecagon":
-        hendecagon()
-    if txtloop_input=="dodecagon":
-        dodecagon()
-
-
-    again =input("Do you want me to draw more? Yes or No").lower().strip().replace("_"," ").replace(",","").replace(".","")
-    if again == "yes":
-        continue
-    if again == "no":
-        print("Goodbye!❤️")
-        break
     else:
-        print("Sorry, I didn't get it")
+        messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
+        body=f"Error in text input: {text_input}"
+        send_shape_error_report_email()
+
+def goodbye_popup():
+    popup = tk.Toplevel()
+    popup.title("Goodbye! ❤️")
+    popup.geometry("500x100")
+    
+    label = tk.Label(popup, text="Thanks for using!", font=("Arial", 12))
+    label.pack(pady=20)
+
+    btn = tk.Button(popup, text="Close", command=popup.destroy)
+    btn.pack()
+
+
+def shape_loop():
+    while True:
+        screen=t.getscreen()
+        txtloop_input=simpledialog.askstring("Enter the name of the shape you want:","What do you want me to draw next?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+        global body
+        if txtloop_input=="circle":
+            circle()
+        elif txtloop_input=="equilateraltriangle":
+            equilateral_triangle()
+        elif txtloop_input=="square":
+            square()
+        elif txtloop_input=="rectangle":
+            rectangle()
+        elif txtloop_input=="rhombus":
+            rhombus()
+        elif txtloop_input=="parallelogram":
+            parallelogram()
+        elif txtloop_input=="trapezium":
+            trapezium()
+        elif txtloop_input=="kite":
+            kite()
+        elif txtloop_input=="pentagon":
+            pentagon()
+        elif txtloop_input=="hexagon":
+            hexagon()
+        elif txtloop_input=="heptagon":
+            heptagon()
+        elif txtloop_input=="octagon":
+            octagon()
+        elif txtloop_input=="nonagon":
+            nonagon()
+        elif txtloop_input=="decagon":
+            decagon()
+        elif txtloop_input=="rightangledtriangle" or txtloop_input=="rightangletriangle":
+            right_angled_triangle()
+        elif txtloop_input=="scalenetriangle":
+            scalene_triangle()
+        elif txtloop_input=="isoscelestriangle":
+            isosceles_triangle()
+        elif txtloop_input=="semicircle":
+            semicircle()
+        elif txtloop_input=="isoscelesrightangledtriangle" or txtloop_input=="isoscelesrightangletriangle" or txtloop_input=="isoscelesrighttriangle":
+            right_angled_triangle()
+        elif txtloop_input=="acutetriangle":
+            equilateral_triangle()
+        elif txtloop_input=="isoscelesacutetriangle" or txtloop_input=="acuteisoscelestriangle":
+            isosceles_triangle()
+        elif txtloop_input=="scaleneacutetriangle" or txtloop_input=="acutescalenetriangle":
+            scalene_triangle()
+        elif txtloop_input=="obtusetriangle":
+            obtuse_triangle()
+        elif txtloop_input=="scaleneobtusetriangle" or txtloop_input=="obtusescalenetriangle":
+            obtuse_triangle()
+        elif txtloop_input=="isoscelesobtusetriangle" or txtloop_input=="obtuseisoscelestriangle":
+            isosceles_obtuse_triangle()
+        elif txtloop_input=="verticalellipse":
+            vertical_ellipse()
+        elif txtloop_input=="horizontalellipse":
+            horizontal_ellipse()
+        elif txtloop_input=="ellipse":
+            ellipse_input=simpledialog.askstring("Enter the type of the ellipse:","Which kind of Ellipse do you want me to draw?/nIs it vertical (Major axis: vertical & Minor axis: horizontal) or horizontal(Major axis: horizontal & Minor axis: vertical)?/nType 'vertical' for Vertical Ellipse or 'horizontal' for Horizontal Ellipse: ", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+
+            if ellipse_input=="vertical":
+                vertical_ellipse()
+            elif ellipse_input=="horizontal":
+                horizontal_ellipse()
+            else:
+                messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
+                body=f"Error in ellipse input: {ellipse_input}"
+                send_shape_error_report_email()
+        elif txtloop_input=="triangle":
+            triangle_input=simpledialog.askstring("Enter the type of triangle:","Which kind of Triangle do you want me to draw?\nEnter the type: ", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+            if triangle_input == "rightangledtriangle" or triangle_input == "rightangletriangle" or triangle_input == "righttriangle" or triangle_input == "rightangled" or triangle_input == "rightangle":
+                right_angled_triangle()
+            elif triangle_input == "scalenetriangle" or triangle_input=="scalene":
+                scalene_triangle()
+            elif triangle_input == "isoscelestriangle" or triangle_input=="isosceles":
+                isosceles_triangle()
+            elif triangle_input == "isoscelesrightangledtriangle" or triangle_input == "isoscelesrightangletriangle" or triangle_input == "isoscelesrighttriangle" or triangle_input == "isoscelesrightangled" or triangle_input == "isoscelesrightangle" or triangle_input == "isoscelesright":
+                right_angled_triangle()
+            elif triangle_input == "acutetriangle" or triangle_input=="acute":
+                equilateral_triangle()
+            elif triangle_input == "isoscelesacutetriangle" or triangle_input == "acuteisoscelestriangle" or triangle_input == "isoscelesacute" or triangle_input == "acuteisosceles":
+                isosceles_triangle()
+            elif triangle_input == "scaleneacutetriangle" or triangle_input == "acutescalenetriangle" or triangle_input == "scaleneacute" or triangle_input == "acutescalene":
+                scalene_triangle()
+            elif triangle_input == "obtusetriangle" or triangle_input=="obtuse":
+                obtuse_triangle()
+            elif triangle_input == "scaleneobtusetriangle" or triangle_input == "obtusescalenetriangle" or triangle_input == "scaleneobtuse" or triangle_input == "obtusescalene":
+                obtuse_triangle()
+            elif triangle_input == "isoscelesobtusetriangle" or triangle_input == "obtuseisoscelestriangle" or triangle_input == "isoscelesobtuse" or triangle_input == "obtuseisosceles":
+                isosceles_obtuse_triangle()
+            elif triangle_input == "equilateraltriangle" or triangle_input=="equilateral":
+                equilateral_triangle()
+            else:
+                messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
+                body=f"Error in triangle input: {triangle_input}"
+                send_shape_error_report_email()
+        elif txtloop_input=="hendecagon":
+            hendecagon()
+        elif txtloop_input=="dodecagon":
+            dodecagon()
+        else:
+            messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
+            body=f"Error in text loop input: {txtloop_input}"
+            send_shape_error_report_email()
+
+
+        again =simpledialog.askstring("Enter one of the option:","Do you want me to draw more? Yes or No", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+        if again == "yes":
+            continue
+        elif again == "no":
+             goodbye_popup()
+             break
+        else:
+            messagebox.showerror("Invalid Input", "Sorry,I do not get it")
+
+
+
+def send_shape_error_report_email():
+    sender_email = "xxxxxxxx@gmail.com"
+    reciever_email = "xxxxxxxxx@gmail.com"
+    password = "xxxx xxxx xxxx xxxx"
+
+    msg = MIMEMultipart()
+    msg["From"] = sender_email
+    msg["To"] = reciever_email
+    msg["Subject"] = "Error Report"
+
+    msg.attach(MIMEText(body, "plain"))
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(sender_email, password)
+        server.send_message(msg)
+
+
+def run_tk():
+    root.mainloop()
+    
