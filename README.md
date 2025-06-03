@@ -57,4 +57,6 @@ Octagon
 - Bug fixes and logic refinements to support the expanded GUI
 
 ### Updates
--Introduced support for concave polygons, including customizable logic to define indentations.
+-Introduced support for concave polygons.
+- Added: star polygons (polygrams), sector and segment of a circle, quatrefoil, heart, and annulus  
+- Made some tweaks and adjustments to improve structure and drawing accuracy
