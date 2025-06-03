@@ -212,6 +212,7 @@ def dodecagon():
     for i in range(12):
         angle=360/12
         t.seth((i+1)*angle)
+        t.fd(50)
 
 #Irregular_Concave_polygons
 
@@ -308,7 +309,7 @@ def concave_decagon():
 
 #Star_Polygons
 
-def t.pentagram():
+def pentagram():
     n = 5
     step = 2
     angle = (360 * step) / n
@@ -453,7 +454,8 @@ def annulus():
 #Circle_input
 def circle_input():
     circle_input=simpledialog.askstring("Enter the data:", "Enter the radius of the circle you want to draw")
-    circle(circle_input)
+    circle_radius=float(circle_input)
+    circle(circle_radius)
 
 #Ellipse
 
