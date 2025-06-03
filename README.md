@@ -39,7 +39,7 @@ Octagon
     - Square
     - Triangle
     - Circle
-- Added a **Start Drawing** button to begin shape rendering
+- Added a **Start** button to begin shape rendering
 
 ### 🐢 Embedded Turtle Graphics
 - Turtle graphics now run inside the GUI canvas window
@@ -56,3 +56,5 @@ Octagon
 - Smoother UX with more intuitive interactions
 - Bug fixes and logic refinements to support the expanded GUI
 
+### Updates
+-Introduced support for concave polygons, including customizable logic to define indentations.
