@@ -2,6 +2,7 @@ import os
 import sys
 import tkinter as tk
 import smtplib
+from math import pi
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from tkinter import Menu
@@ -300,23 +301,159 @@ def concave_nonagon():
     t.fd(78)
 def concave_decagon():
     angle=0
-    for i in range(5):
+    for i in range(10):
         t.seth(angle)
         t.fd(100)
         angle += 144
+
+#Star_Polygons
+
+def t.pentagram():
+    n = 5
+    step = 2
+    angle = (360 * step) / n
+
+    for i in range(n):
+        t.seth(i * angle)
+        t.fd(100)
+
+def hexagram():
+    radius = 100
+    points = []
+
+    for i in range(6):
+        angle = 60 * i
+        t.seth(angle)
+        t.penup()
+        t.goto(0, 0)
+        t.fd(radius)
+        points.apt.pend(pos())
+
+    t.penup()
+    t.goto(points[0])
+    t.pendown()
+    t.goto(points[2])
+    t.goto(points[4])
+    t.goto(points[0])
+
+    t.penup()
+    t.goto(points[1])
+    t.pendown()
+    t.goto(points[3])
+    t.goto(points[5])
+    t.goto(points[1])
+
+def heptagram():
+    n=7
+    step=3
+    angle = (360*step)/n
+    for i in range(n):
+        t.seth(i*angle)
+        t.fd(100)
+def octagram():
+    n=8
+    step=3
+    angle = (360*step)/n
+    for i in range(n):
+        t.seth(i*angle)
+        t.fd(100)
+def nonagram():
+    n=9
+    step=5
+    angle = (360*step)/n
+    for i in range(9):
+        t.seth(i*angle)
+        t.fd(100)
+def decagram():
+    n=10
+    step=7
+    angle = (360*step)/n
+    for i in range(n):
+        t.seth(i*angle)
+        t.fd(100)
+def hendecagram():
+    n=11
+    step=2
+    angle = (360*step)/n
+    for i in range(n):
+        t.seth(i*angle)
+        t.fd(100)
+def dodecagram():
+    n=12
+    step=5
+    angle = (360*step)/n
+    for i in range(n):
+        t.seth(i*angle)
+        t.fd(100)
+def tridecagram():
+    n=13
+    step=5
+    angle = (360*step)/n
+    for i in range(n):
+        t.seth(i*angle)
+        t.fd(100)
+
 #Curved_Shapes
 #Circle
 
-def circle():
+def circle(radius):
     for i in range(360):
+        step=2*pi*radius/360
         t.seth(i)
-        t.fd(1)
+        t.fd(step)
 def semicircle():
     t.seth(0)
     t.fd(115)
     for i in range(90,271,1):
         t.seth(i)
         t.fd(1)
+def heart():
+    t.seth(45)
+    t.fd(150)
+    for i in range(90,271,1):
+        t.seth(i)
+        t.fd(1)
+    for i in range(90,271,1):
+        t.seth(i)
+        t.fd(1)
+    t.seth(319)
+    t.fd(163)
+def quatrefoil():
+    for i in range(180):
+        t.seth(i)
+        t.fd(1)
+    for i in range(90,270,1):
+        t.seth(i)
+        t.fd(1)
+    for i in range(180,361,1):
+        t.seth(i)
+        t.fd(1)
+    for i in range(270,450,1):
+        t.seth(i)
+        t.fd(1)
+def sector_of_circle():
+    t.seth(45)
+    t.fd(50)
+    for i in range(90,136,1):
+        t.seth(i)
+        t.fd(1)
+    t.seth(256)
+    t.fd(81)
+def segment_of_circle():
+    semicircle()
+def annulus():
+    t.circle(100)
+    t.penup()
+    t.seth(270)
+    t.fd(5)
+    t.seth(0)
+    t.pendown()
+    t.circle(105)
+
+#Circle_input
+def circle_input():
+    circle_input=simpledialog.askstring("Enter the data:", "Enter the radius of the circle you want to draw")
+    circle(circle_input)
 
 #Ellipse
 
@@ -344,12 +481,36 @@ def horizontal_ellipse():
             t.fd(3)
         if 415<=i<450:
             t.fd(1.25)
+#Miscellaneous
+
+def swastika():
+    t.seth(0)
+    t.fd(100)
+    t.seth(270)
+    t.fd(200)
+    t.seth(0)
+    t.fd(100)
+    t.seth(180)
+    t.fd(100)
+    t.seth(90)
+    t.fd(100)
+    t.seth(0)
+    t.fd(100)
+    t.seth(90)
+    t.fd(100)
+    t.seth(270)
+    t.fd(100)
+    t.seth(180)
+    t.fd(200)
+    t.seth(270)
+    t.fd(100)
+
 #User_Input
 def user_input():
     text_input=simpledialog.askstring("Enter the name of the shape you want:","Which shape do you want me to draw?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
     global body
     if text_input=="circle":
-        circle()
+        circle_input()
     elif text_input=="equilateraltriangle" or text_input=="equilateral":
         equilateral_triangle()
     elif text_input=="square":
@@ -458,6 +619,36 @@ def user_input():
         concave_nonagon()
     elif text_input=="concavedecagon" or text_input=="irregulardecagon" or text_input=="star":
         concave_decagon()
+    elif text_input=="swastika":
+        swastika()
+    elif text_input=="heart":
+        heart()
+    elif text_input=="quatrefoil":
+        quatrefoil()
+    elif text_input=="sectorofcircle":
+        sector_of_circle()
+    elif text_input=="segmentofcircle":
+        segment_of_circle()
+    elif text_input=="annulus":
+        annulus()
+    elif text_input=="pentagram":
+        pentagram()
+    elif text_input=="hexagram":
+        hexagram()
+    elif text_input=="heptagram":
+        heptagram()
+    elif text_input=="octagram":
+        octagram()
+    elif text_input=="nonagram":
+        nonagram()
+    elif text_input=="decagram":
+        decagram()
+    elif text_input=="hendecagram":
+        hendecagram()
+    elif text_input=="dodecagram":
+        dodecagram()
+    elif text_input=="tridecagram":
+        tridecagram()
     else:
         messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
         body=f"Error in text input: {text_input}"
@@ -603,8 +794,39 @@ def shape_loop():
             concave_octagon()
         elif txtloop_input=="concavenonagon" or txtloop_input=="irregularnonagon":
             concave_nonagon()
-         elif txtloop_input=="concavedecagon" or txtloop_input=="irregulardecagon" or txtloop_input=="star":
+        elif txtloop_input=="concavedecagon" or txtloop_input=="irregulardecagon" or txtloop_input=="star":
             concave_decagon()
+        elif txtloop_input=="swastika":
+            swastika()
+        elif txtloop_input=="heart":
+            heart()
+        elif txtloop_input=="quatrefoil":
+            quatrefoil()
+        elif txtloop_input=="sectorofcircle":
+            sector_of_circle()
+        elif txtloop_input=="segmentofcircle":
+            segment_of_circle()
+        elif txtloop_input=="annulus":
+            annulus()
+        elif txtloop_input=="pentagram":
+            pentagram()
+        elif txtloop_input=="hexagram":
+            hexagram()
+        elif txtloop_input=="heptagram":
+            heptagram()
+        elif txtloop_input=="octagram":
+            octagram()
+        elif txtloop_input=="nonagram":
+            nonagram()
+        elif txtloop_input=="decagram":
+            decagram()
+        elif txtloop_input=="hendecagram":
+            hendecagram()
+        elif txtloop_input=="dodecagram":
+            dodecagram()
+        elif txtloop_input=="tridecagram":
+            tridecagram()
+
         
         else:
             messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
@@ -620,7 +842,6 @@ def shape_loop():
              break
         else:
             messagebox.showerror("Invalid Input", "Sorry,I do not get it")
-
 
 #Shape_Error_Report
 def send_shape_error_report_email():
