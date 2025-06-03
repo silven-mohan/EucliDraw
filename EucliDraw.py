@@ -1,3 +1,5 @@
+import os
+import sys
 import tkinter as tk
 import smtplib
 from email.mime.text import MIMEText
@@ -6,6 +8,7 @@ from tkinter import Menu
 from tkinter import simpledialog
 from tkinter import messagebox
 from turtle import RawTurtle, ScrolledCanvas
+
 #Turtle's Actions and Shapes
 def clear_canvas():
     t.clear()
@@ -28,12 +31,22 @@ def shape_classic():
 def main():
     user_input()
     shape_loop()
+
+#Icon usage
+if getattr(sys, 'frozen', False):
+    base_path=sys._MEIPASS
+else:
+    base_path=base_path = os.path.dirname(os.path.abspath(__file__))
+icon_path= os.path.join(base_path, "assets", "EucliDraw_logo.ico")
+
 #Tkinter
 root=tk.Tk()
 root.title("EucliDraw")
+root.iconbitmap(icon_path)
 dialog_root= tk.Tk()
 dialog_root.withdraw()
 menu_bar=Menu(root)
+
 #Turtle Canvas inside the Tkinter GUI
 canvas_frame = tk.Frame(root)
 canvas_frame.pack(fill="both", expand=True)
@@ -43,15 +56,18 @@ turtle_canvas.pack(fill="both", expand=True)
 
 t= RawTurtle(turtle_canvas)
 t.speed(0)
+
 #Clear Canvas
 canvas_menu=Menu(menu_bar, tearoff=0)
 canvas_menu.add_command(label="Clear Canvas", command=clear_canvas)
 menu_bar.add_cascade(label="Canvas", menu=canvas_menu)
+
 #Visibility of Pointer
 pointer_visibility_menu=Menu(menu_bar, tearoff=0)
 pointer_visibility_menu.add_command(label="Hide Pointer", command=hide_turtle)
 pointer_visibility_menu.add_command(label="Show Pointer", command=show_turtle)
 menu_bar.add_cascade(label="Visibility of Pointer", menu=pointer_visibility_menu)
+
 #Appearance of Pointer
 pointer_appearance_menu=Menu(menu_bar, tearoff=0)
 pointer_appearance_menu.add_command(label="Classic", command=shape_classic)
@@ -61,16 +77,56 @@ pointer_appearance_menu.add_command(label="Triangle", command=shape_triangle)
 pointer_appearance_menu.add_command(label="Square", command=shape_square)
 pointer_appearance_menu.add_command(label="Turtle", command=shape_turtle)
 menu_bar.add_cascade(label="Appearance of Pointer", menu=pointer_appearance_menu)
-#Start Drawing
+
 menu_bar.add_command(label="Start", command=main)
 
 root.config(menu=menu_bar)
 
+#Polygons
+#Triangles
 
 def equilateral_triangle():
     for i in range(3):
         t.seth(i*120)
         t.fd(100)
+def right_angled_triangle():
+    for i in range(3):
+        t.seth(i*135)
+        if i==0:
+            t.fd(100)
+        if i==1:
+            t.fd(141.42)
+        if i==2:
+            t.fd(100)
+def scalene_triangle():
+    t.seth(135)
+    t.fd(100)
+    t.seth(345)
+    t.fd(220)
+    t.seth(185)
+    t.fd(145)
+def isosceles_triangle():
+    t.seth(0)
+    t.fd(180)
+    t.seth(135)
+    t.fd(130)
+    t.seth(225)
+    t.fd(130)
+def obtuse_triangle():
+    t.fd(200)
+    t.seth(130)
+    t.fd(260)
+    t.seth(260)
+    t.fd(204)
+def isosceles_obtuse_triangle():
+    t.fd(100)
+    t.seth(30)
+    t.fd(100)
+    t.seth(195)
+    t.fd(195)
+
+#Quadrilaterals
+
 def square():
     for i in range(4):
         t.seth(i*90)
@@ -113,20 +169,9 @@ def kite():
     t.fd(62.5)
     t.seth(280)
     t.fd(100)
-def circle():
-    for i in range(360):
-        t.seth(i)
-        t.fd(1)
-def right_angled_triangle():
-    for i in range(3):
-        t.seth(i*135)
-        if i==0:
-            t.fd(100)
-        if i==1:
-            t.fd(141.42)
-        if i==2:
-            t.fd(100)
-            
+
+#Polygons
+
 def pentagon():
     for i in range(5):
         angle=360/5
@@ -166,39 +211,115 @@ def dodecagon():
     for i in range(12):
         angle=360/12
         t.seth((i+1)*angle)
-        t.fd(50)
-def scalene_triangle():
-    t.seth(135)
+
+#Irregular_Concave_polygons
+
+def concave_quadrilateral():
+    t.seth(45)
+    t.fd(150)
+    t.seth(315)
+    t.fd(150)
+    t.seth(160)
+    t.fd(113)
+    t.seth(200)
+    t.fd(113)
+def concave_pentagon():
+    t.seth(90)
     t.fd(100)
-    t.seth(345)
-    t.fd(220)
-    t.seth(185)
-    t.fd(145)
-def isosceles_triangle():
-    t.seth(0)
-    t.fd(180)
-    t.seth(135)
-    t.fd(130)
+    t.seth(180)
+    t.fd(100)
     t.seth(225)
-    t.fd(130)
-def obtuse_triangle():
-    t.fd(200)
-    t.seth(130)
-    t.fd(260)
-    t.seth(260)
-    t.fd(204)
-def isosceles_obtuse_triangle():
+    t.fd(70)
+    t.seth(315)
+    t.fd(70)
+    t.seth(360)
+    t.fd(100)
+def concave_hexagon():
+    t.seth(90)
     t.fd(100)
     t.seth(30)
+    t.fd(150)
+    t.seth(315)
+    t.fd(150)
+    t.seth(270)
     t.fd(100)
-    t.seth(195)
-    t.fd(195)  
+    t.seth(135)
+    t.fd(150)
+    t.seth(210)
+    t.fd(150)
+def concave_heptagon():
+    t.seth(90)
+    t.fd(100)
+    t.seth(45)
+    t.fd(100)
+    t.seth(345)
+    t.fd(100)
+    t.seth(235)
+    t.fd(100)
+    t.seth(305)
+    t.fd(100)
+    t.seth(215)
+    t.fd(100)
+    t.seth(138)
+    t.fd(116)
+def concave_octagon():
+    t.seth(80)
+    t.fd(100)
+    t.seth(280)
+    t.fd(100)
+    t.seth(350)
+    t.fd(100)
+    t.seth(190)
+    t.fd(100)
+    t.seth(260)
+    t.fd(100)
+    t.seth(100)
+    t.fd(100)
+    t.seth(170)
+    t.fd(100)
+    t.seth(10)
+    t.fd(100)
+def concave_nonagon():
+    t.seth(75)
+    t.fd(80)
+    t.seth(305)
+    t.fd(100)
+    t.seth(55)
+    t.fd(100)
+    t.seth(305)
+    t.fd(80)
+    t.seth(200)
+    t.fd(100)
+    t.seth(275)
+    t.fd(100)
+    t.seth(180)
+    t.fd(50)
+    t.seth(75)
+    t.fd(100)
+    t.seth(160)
+    t.fd(78)
+def concave_decagon():
+    angle=0
+    for i in range(5):
+        t.seth(angle)
+        t.fd(100)
+        angle += 144
+#Curved_Shapes
+#Circle
+
+def circle():
+    for i in range(360):
+        t.seth(i)
+        t.fd(1)
 def semicircle():
     t.seth(0)
     t.fd(115)
     for i in range(90,271,1):
         t.seth(i)
         t.fd(1)
+
+#Ellipse
+
 def vertical_ellipse():
     for i in range(360):
         t.seth(i)
@@ -223,6 +344,7 @@ def horizontal_ellipse():
             t.fd(3)
         if 415<=i<450:
             t.fd(1.25)
+#User_Input
 def user_input():
     text_input=simpledialog.askstring("Enter the name of the shape you want:","Which shape do you want me to draw?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
     global body
@@ -242,17 +364,17 @@ def user_input():
         trapezium()
     elif text_input=="kite":
         kite()
-    elif text_input=="pentagon":
+    elif text_input=="pentagon" or text_input=="convexpentagon":
         pentagon()
-    elif text_input=="hexagon":
+    elif text_input=="hexagon" or text_input=="convexhexagon":
         hexagon()
-    elif text_input=="heptagon":
+    elif text_input=="heptagon" or text_input=="convexheptagon":
         heptagon()
-    elif text_input=="octagon":
+    elif text_input=="octagon" or text_input=="convexoctagon":
         octagon()
-    elif text_input=="nonagon":
+    elif text_input=="nonagon" or text_input=="convexnonagon":
         nonagon()
-    elif text_input=="decagon":
+    elif text_input=="decagon" or text_input=="convexdecagon":
         decagon()
     elif text_input=="rightangledtriangle" or text_input=="rightangletriangle" or text_input=="righttriangle":
         right_angled_triangle()
@@ -318,15 +440,33 @@ def user_input():
             messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
             body=f"Error in triangle input: {triangle_input}"
             send_shape_error_report_email()
-    elif text_input=="hendecagon":
+    elif text_input=="hendecagon" or text_input=="convexhendecagon":
         hendecagon()
-    elif text_input=="dodecagon":
+    elif text_input=="dodecagon" or text_input=="convexdodecagon":
         dodecagon()
+    elif text_input=="concavequadrilateral" or text_input=="irregularquadrilateral":
+        concave_quadrilateral()
+    elif text_input=="concavepentagon" or text_input=="irregularpentagon":
+        concave_pentagon()
+    elif text_input=="concavehexagon" or text_input=="irregularhexagon":
+        convave_hexagon()
+    elif text_input=="concaveheptagon" or text_input=="irregularheptagon":
+        concave_heptagon()
+    elif text_input=="concaveoctagon" or text_input=="irregularoctagon":
+        concave_octagon()
+    elif text_input=="concavenonagon" or text_input=="irregularnonagon":
+        concave_nonagon()
+    elif text_input=="concavedecagon" or text_input=="irregulardecagon" or text_input=="star":
+        concave_decagon()
     else:
         messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
         body=f"Error in text input: {text_input}"
         send_shape_error_report_email()
+#Close_Program
+def close_program():
+    root.destroy()
 
+#Goodbye_Popup
 def goodbye_popup():
     popup = tk.Toplevel()
     popup.title("Goodbye! ❤️")
@@ -335,10 +475,20 @@ def goodbye_popup():
     label = tk.Label(popup, text="Thanks for using!", font=("Arial", 12))
     label.pack(pady=20)
 
-    btn = tk.Button(popup, text="Close", command=popup.destroy)
-    btn.pack()
+    button_frame = tk.Frame(popup)
+    button_frame.pack(pady=10, fill="x", padx=20)
+    
+    continue_btn = tk.Button(button_frame, text="Continue", command=popup.destroy)
+    continue_btn.grid(row=0, column=0, sticky="ew", padx=10)
+
+    exit_btn = tk.Button(button_frame, text="Exit", command=lambda: print("Exit clicked"))
+    exit_btn.grid(row=0, column=1, sticky="ew", padx=10)
+
+    button_frame.grid_columnconfigure(0, weight=1)
+    button_frame.grid_columnconfigure(1, weight=1)
 
 
+#Loop
 def shape_loop():
     while True:
         screen=t.getscreen()
@@ -441,6 +591,21 @@ def shape_loop():
             hendecagon()
         elif txtloop_input=="dodecagon":
             dodecagon()
+        elif txtloop_input=="concavequadrilateral" or txtloop_input=="irregularquadrilateral":
+            concave_quadrilateral()
+        elif txtloop_input=="concavepentagon" or txtloop_input=="irregularpentagon":
+            concave_pentagon()
+        elif txtloop_input=="concavehexagon" or txtloop_input=="irregularhexagon":
+            convave_hexagon()
+        elif txtloop_input=="concaveheptagon" or txtloop_input=="irregularheptagon":
+            concave_heptagon()
+        elif txtloop_input=="concaveoctagon" or txtloop_input=="irregularoctagon":
+            concave_octagon()
+        elif txtloop_input=="concavenonagon" or txtloop_input=="irregularnonagon":
+            concave_nonagon()
+         elif txtloop_input=="concavedecagon" or txtloop_input=="irregulardecagon" or txtloop_input=="star":
+            concave_decagon()
+        
         else:
             messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
             body=f"Error in text loop input: {txtloop_input}"
@@ -457,10 +622,10 @@ def shape_loop():
             messagebox.showerror("Invalid Input", "Sorry,I do not get it")
 
 
-
+#Shape_Error_Report
 def send_shape_error_report_email():
     sender_email = "xxxxxxxx@gmail.com"
-    reciever_email = "xxxxxxxxx@gmail.com"
+    reciever_email = "xxxxxx@gmail.com"
     password = "xxxx xxxx xxxx xxxx"
 
     msg = MIMEMultipart()
@@ -478,4 +643,5 @@ def send_shape_error_report_email():
 
 def run_tk():
     root.mainloop()
-    
+
+run_tk()
