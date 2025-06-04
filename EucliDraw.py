@@ -624,7 +624,7 @@ def user_input():
         concave_nonagon()
     elif text_input=="concavedecagon" or text_input=="irregulardecagon" or text_input=="star":
         concave_decagon()
-    elif text_input=="swastika":
+    elif text_input=="swastika" or text_input=="nazi":
         swastika()
     elif text_input=="heart":
         heart()
@@ -694,7 +694,7 @@ def shape_loop():
         txtloop_input=simpledialog.askstring("Enter the name of the shape you want:","What do you want me to draw next?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
         global body
         if txtloop_input=="circle":
-            circle()
+            circle_input()
         elif txtloop_input=="equilateraltriangle":
             equilateral_triangle()
         elif txtloop_input=="square":
@@ -804,7 +804,7 @@ def shape_loop():
             concave_nonagon()
         elif txtloop_input=="concavedecagon" or txtloop_input=="irregulardecagon" or txtloop_input=="star":
             concave_decagon()
-        elif txtloop_input=="swastika":
+        elif txtloop_input=="swastika" or txtloop_input=="nazi":
             swastika()
         elif txtloop_input=="heart":
             heart()
