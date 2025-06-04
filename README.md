@@ -60,3 +60,7 @@ Octagon
 -Introduced support for concave polygons.
 - Added: star polygons (polygrams), sector and segment of a circle, quatrefoil, heart, and annulus  
 - Made some tweaks and adjustments to improve structure and drawing accuracy
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
