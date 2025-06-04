@@ -9,6 +9,7 @@ from tkinter import Menu
 from tkinter import simpledialog
 from tkinter import messagebox
 from turtle import RawTurtle, ScrolledCanvas
+from cryptography.fernet import Fernet
 
 #Turtle's Actions and Shapes
 def clear_canvas():
@@ -454,7 +455,7 @@ def annulus():
 #Circle_input
 def circle_input():
     circle_input=simpledialog.askstring("Enter the data:", "Enter the radius of the circle you want to draw")
-    circle_radius=float(circle_input)
+    circle_radius=float(circle_radius)
     circle(circle_radius)
 
 #Ellipse
@@ -621,7 +622,7 @@ def user_input():
         concave_nonagon()
     elif text_input=="concavedecagon" or text_input=="irregulardecagon" or text_input=="star":
         concave_decagon()
-    elif text_input=="swastika":
+    elif text_input=="swastika" or text_input=="nazi":
         swastika()
     elif text_input=="heart":
         heart()
@@ -656,10 +657,12 @@ def user_input():
         body=f"Error in text input: {text_input}"
         send_shape_error_report_email()
 #Close_Program
+
 def close_program():
     root.destroy()
 
 #Goodbye_Popup
+
 def goodbye_popup():
     popup = tk.Toplevel()
     popup.title("Goodbye! ❤️")
@@ -682,6 +685,7 @@ def goodbye_popup():
 
 
 #Loop
+
 def shape_loop():
     while True:
         screen=t.getscreen()
@@ -798,7 +802,7 @@ def shape_loop():
             concave_nonagon()
         elif txtloop_input=="concavedecagon" or txtloop_input=="irregulardecagon" or txtloop_input=="star":
             concave_decagon()
-        elif txtloop_input=="swastika":
+        elif txtloop_input=="swastika" or txtloop_input=="nazi":
             swastika()
         elif txtloop_input=="heart":
             heart()
@@ -845,22 +849,48 @@ def shape_loop():
         else:
             messagebox.showerror("Invalid Input", "Sorry,I do not get it")
 
+
 #Shape_Error_Report
+
 def send_shape_error_report_email():
-    sender_email = "xxxxxxxx@gmail.com"
-    reciever_email = "xxxxxx@gmail.com"
-    password = "xxxx xxxx xxxx xxxx"
+
+    #Encryption_of_data
+
+    with open("EucliDraw_Lock/key.key", "rb") as key_file:
+        key = key_file.read()
+
+    fernet = Fernet(key)
+
+    with open("EucliDraw_Lock/pass.bin", "rb") as encrypted_file_pass:
+        encrypted_password = encrypted_file_pass.read()
+
+    app_password = fernet.decrypt(encrypted_password).decode()
+
+    with open("EucliDraw_Lock/sender.bin", "rb") as encrypted_file_sender:
+        encrypted_sender = encrypted_file_sender.read()
+
+    sender = fernet.decrypt(encrypted_sender).decode()
+    
+    with open("EucliDraw_Lock/receiver.bin", "rb") as encrypted_file_receiver:
+        encrypted_receiver = encrypted_file_receiver.read()
+
+    receiver = fernet.decrypt(encrypted_receiver).decode()
+
+    #Error_report_email
+
+    sender_email = sender + "@gmail.com"
+    receiver_email = receiver + "@gmail.com"
 
     msg = MIMEMultipart()
     msg["From"] = sender_email
-    msg["To"] = reciever_email
+    msg["To"] = receiver_email
     msg["Subject"] = "Error Report"
 
     msg.attach(MIMEText(body, "plain"))
 
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
-        server.login(sender_email, password)
+        server.login(sender_email, app_password)
         server.send_message(msg)
 
 
