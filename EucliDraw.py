@@ -455,7 +455,7 @@ def annulus():
 #Circle_input
 def circle_input():
     circle_input=simpledialog.askstring("Enter the data:", "Enter the radius of the circle you want to draw")
-    circle_radius=float(circle_radius)
+    circle_radius=float(circle_input)
     circle(circle_radius)
 
 #Ellipse
