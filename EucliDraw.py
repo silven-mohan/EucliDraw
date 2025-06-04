@@ -32,7 +32,9 @@ def shape_classic():
     t.shape("classic")
 def main():
     user_input()
+    seth(0)
     shape_loop()
+    seth(0)
 
 #Icon usage
 if getattr(sys, 'frozen', False):
@@ -622,7 +624,7 @@ def user_input():
         concave_nonagon()
     elif text_input=="concavedecagon" or text_input=="irregulardecagon" or text_input=="star":
         concave_decagon()
-    elif text_input=="swastika" or text_input=="nazi":
+    elif text_input=="swastika":
         swastika()
     elif text_input=="heart":
         heart()
@@ -802,7 +804,7 @@ def shape_loop():
             concave_nonagon()
         elif txtloop_input=="concavedecagon" or txtloop_input=="irregulardecagon" or txtloop_input=="star":
             concave_decagon()
-        elif txtloop_input=="swastika" or txtloop_input=="nazi":
+        elif txtloop_input=="swastika":
             swastika()
         elif txtloop_input=="heart":
             heart()
@@ -839,7 +841,6 @@ def shape_loop():
             body=f"Error in text loop input: {txtloop_input}"
             send_shape_error_report_email()
 
-
         again =simpledialog.askstring("Enter one of the option:","Do you want me to draw more? Yes or No", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
         if again == "yes":
             continue
@@ -848,7 +849,6 @@ def shape_loop():
              break
         else:
             messagebox.showerror("Invalid Input", "Sorry,I do not get it")
-
 
 #Shape_Error_Report
 
