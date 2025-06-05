@@ -1,5 +1,6 @@
 import os
 import sys
+import tempfile
 import tkinter as tk
 import smtplib
 from math import pi
@@ -32,15 +33,64 @@ def shape_classic():
     t.shape("classic")
 def main():
     user_input()
-    seth(0)
-    shape_loop()
-    seth(0)
+    t.seth(0)
+    t.home()
+    proceed = not (user_choice or user_choice_e or user_choice_t)
+    if proceed:
+        shape_loop()
+        t.seth(0)
+        t.home()
+    return proceed
+
+#Perform Cleanup Tasks
+def perform_cleanup_tasks():
+    with open("session_log.txt", "a") as f:
+        f.write("User closed the app cleanly.\n")
+    temp_dir = tempfile.gettempdir()
+    temp_file = os.path.join(temp_dir, "euclidraw_tempfile.txt")
+    if os.path.exists(temp_file):
+        os.remove(temp_file)
+
+#Close_Program
+def close_program():
+    if messagebox.askokcancel("Exit", "Do you really want to exit?"):
+        try:
+            perform_cleanup_tasks()
+        except Exception as e:
+            print(f"Cleanup error: {e}")
+        finally:
+            try:
+                t.bye()
+            except:
+                pass
+            root.destroy()
+
+#Goodbye_Popup
+def goodbye_popup():
+    popup = tk.Toplevel()
+    popup.title("Goodbye!")
+    popup.geometry("500x100")
+    
+    label = tk.Label(popup, text="Thanks for using!", font=("Arial", 12))
+    label.pack(pady=20)
+
+    button_frame = tk.Frame(popup)
+    button_frame.pack(pady=10, fill="x", padx=20)
+    
+    continue_btn = tk.Button(button_frame, text="Continue", command=popup.destroy)
+    continue_btn.grid(row=0, column=0, sticky="ew", padx=10)
+
+    exit_btn = tk.Button(button_frame, text="Exit", command=lambda: print("Exit clicked"))
+    exit_btn.grid(row=0, column=1, sticky="ew", padx=10)
+
+    button_frame.grid_columnconfigure(0, weight=1)
+    button_frame.grid_columnconfigure(1, weight=1)
 
 #Icon usage
 if getattr(sys, 'frozen', False):
     base_path=sys._MEIPASS
 else:
-    base_path=base_path = os.path.dirname(os.path.abspath(__file__))
+    base_path= os.path.dirname(os.path.abspath(__file__))
 icon_path= os.path.join(base_path, "assets", "EucliDraw_logo.ico")
 
 #Tkinter
@@ -82,11 +132,16 @@ pointer_appearance_menu.add_command(label="Square", command=shape_square)
 pointer_appearance_menu.add_command(label="Turtle", command=shape_turtle)
 menu_bar.add_cascade(label="Appearance of Pointer", menu=pointer_appearance_menu)
 
+#Start
 menu_bar.add_command(label="Start", command=main)
+
+#Exit
+menu_bar.add_command(label="Exit", command=close_program)
 
 root.config(menu=menu_bar)
 
 #Polygons
+
 #Triangles
 
 def equilateral_triangle():
@@ -324,28 +379,25 @@ def pentagram():
 def hexagram():
     radius = 100
     points = []
-
     for i in range(6):
         angle = 60 * i
         t.seth(angle)
         t.penup()
         t.goto(0, 0)
         t.fd(radius)
-        points.apt.pend(pos())
-
-    t.penup()
-    t.goto(points[0])
-    t.pendown()
-    t.goto(points[2])
-    t.goto(points[4])
-    t.goto(points[0])
-
-    t.penup()
-    t.goto(points[1])
-    t.pendown()
-    t.goto(points[3])
-    t.goto(points[5])
-    t.goto(points[1])
+        points.append(t.pos())
+        t.penup()
+        t.goto(points[0])
+        t.pendown()
+        t.goto(points[2])
+        t.goto(points[4])
+        t.goto(points[0])
+        t.penup()
+        t.goto(points[1])
+        t.pendown()
+        t.goto(points[3])
+        t.goto(points[5])
+        t.goto(points[1])
 
 def heptagram():
     n=7
@@ -461,7 +513,6 @@ def circle_input():
     circle(circle_radius)
 
 #Ellipse
-
 def vertical_ellipse():
     for i in range(360):
         t.seth(i)
@@ -487,7 +538,6 @@ def horizontal_ellipse():
         if 415<=i<450:
             t.fd(1.25)
 #Miscellaneous
-
 def swastika():
     t.seth(0)
     t.fd(100)
@@ -512,8 +562,19 @@ def swastika():
 
 #User_Input
 def user_input():
-    text_input=simpledialog.askstring("Enter the name of the shape you want:","Which shape do you want me to draw?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
-    global body
+    global body, user_choice, user_choice_e, user_choice_t
+    ask_text_input=simpledialog.askstring("Enter the name of the shape you want:","Which shape do you want me to draw?", parent=dialog_root)    
+    if ask_text_input is None:
+        user_choice=messagebox.askyesno("Cancelled", "You pressed Cancel. Do you want to stop drawing")
+        if user_choice:
+            goodbye_popup()
+            return True
+        else:
+            return False
+    elif ask_text_input is not None:
+        user_choice=False
+
+    text_input=ask_text_input.lower().strip().replace("_"," ").replace(",","").replace(".","").replace(" ", "")
     if text_input=="circle":
         circle_input()
     elif text_input=="equilateraltriangle" or text_input=="equilateral":
@@ -569,7 +630,18 @@ def user_input():
     elif text_input=="horizontalellipse":
         horizontal_ellipse()
     elif text_input=="ellipse":
-        ellipse_input=simpledialog.askstring("Enter the type of the ellipse:","Which kind of Ellipse you want me to draw.\nIs it vertical(Major axis:vertical &  Minor axis:horizontal) or horizontal(Major axis:horizontal & Minor axis:vertical)\nType Vertical for Vertical Ellipse or Horizontal for Horizontal Ellipse", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+        ask_ellipse_input=simpledialog.askstring("Enter the type of the ellipse:","Which kind of Ellipse you want me to draw.\nIs it vertical(Major axis:vertical &  Minor axis:horizontal) or horizontal(Major axis:horizontal & Minor axis:vertical)\nType Vertical for Vertical Ellipse or Horizontal for Horizontal Ellipse", parent=dialog_root)    
+        if ask_ellipse_input is None:
+            user_choice_e=messagebox.askyesno("Cancelled", "You pressed Cancel. Do you want to stop drawing")
+            if user_choice_e:
+                goodbye_popup()
+                return True
+            else:
+                return False
+        elif ask_ellipse_input is not None:
+            user_choice_e= False
+
+        ellipse_input=ask_ellipse_input.lower().strip().replace("_"," ").replace(",","").replace(".","").replace(" ", "")
         if ellipse_input=="vertical":
             vertical_ellipse()
         elif ellipse_input=="horizontal":
@@ -579,7 +651,18 @@ def user_input():
             body=f"Error in ellipse input: {ellipse_input}"
             send_shape_error_report_email()
     elif text_input=="triangle":
-        triangle_input=simpledialog.askstring("Enter the type of triangle:","Which kind of Triangle you want me to draw?/nEnter the type of triangle you wnat me to draw", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+        ask_triangle_input=simpledialog.askstring("Enter the type of triangle:","Which kind of Triangle you want me to draw?/nEnter the type of triangle you wnat me to draw", parent=dialog_root)        
+        if ask_triangle_input is None:
+            user_choice_t=messagebox.askyesno("Cancelled", "You pressed Cancel. Do you want to stop drawing")
+            if user_choice_t:
+                goodbye_popup()
+                return True
+            else:
+                return False
+        elif ask_triangle_input is not None:
+            user_choice_t= False
+
+        triangle_input=ask_triangle_input.lower().strip().replace("_"," ").replace(",","").replace(".","").replace(" ", "")
         if triangle_input == "rightangledtriangle" or triangle_input == "rightangletriangle" or triangle_input == "righttriangle" or triangle_input=="rightangle" or triangle_input=="rightangled":
             right_angled_triangle()
         elif triangle_input == "scalenetriangle" or triangle_input=="scalene":
@@ -615,7 +698,7 @@ def user_input():
     elif text_input=="concavepentagon" or text_input=="irregularpentagon":
         concave_pentagon()
     elif text_input=="concavehexagon" or text_input=="irregularhexagon":
-        convave_hexagon()
+        concave_hexagon()
     elif text_input=="concaveheptagon" or text_input=="irregularheptagon":
         concave_heptagon()
     elif text_input=="concaveoctagon" or text_input=="irregularoctagon":
@@ -624,7 +707,7 @@ def user_input():
         concave_nonagon()
     elif text_input=="concavedecagon" or text_input=="irregulardecagon" or text_input=="star":
         concave_decagon()
-    elif text_input=="swastika" or text_input=="nazi":
+    elif text_input=="swastika":
         swastika()
     elif text_input=="heart":
         heart()
@@ -658,41 +741,20 @@ def user_input():
         messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
         body=f"Error in text input: {text_input}"
         send_shape_error_report_email()
-#Close_Program
-
-def close_program():
-    root.destroy()
-
-#Goodbye_Popup
-
-def goodbye_popup():
-    popup = tk.Toplevel()
-    popup.title("Goodbye! ❤️")
-    popup.geometry("500x100")
-    
-    label = tk.Label(popup, text="Thanks for using!", font=("Arial", 12))
-    label.pack(pady=20)
-
-    button_frame = tk.Frame(popup)
-    button_frame.pack(pady=10, fill="x", padx=20)
-    
-    continue_btn = tk.Button(button_frame, text="Continue", command=popup.destroy)
-    continue_btn.grid(row=0, column=0, sticky="ew", padx=10)
-
-    exit_btn = tk.Button(button_frame, text="Exit", command=lambda: print("Exit clicked"))
-    exit_btn.grid(row=0, column=1, sticky="ew", padx=10)
-
-    button_frame.grid_columnconfigure(0, weight=1)
-    button_frame.grid_columnconfigure(1, weight=1)
-
 
 #Loop
-
 def shape_loop():
     while True:
-        screen=t.getscreen()
-        txtloop_input=simpledialog.askstring("Enter the name of the shape you want:","What do you want me to draw next?", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+        ask_txtloop_input=simpledialog.askstring("Enter the name of the shape you want:","What do you want me to draw next?", parent=dialog_root)
+        txtloop_input=ask_txtloop_input.lower().strip().replace("_"," ").replace(",","").replace(".","").replace(" ", "")
         global body
+        if ask_txtloop_input is None:
+            user_choice_l=messagebox.askyesno("Cancelled", "You pressed Cancel. Do you want to stop drawing")
+            if user_choice_l:
+                goodbye_popup()
+                break
+            else:
+                continue
         if txtloop_input=="circle":
             circle_input()
         elif txtloop_input=="equilateraltriangle":
@@ -748,7 +810,16 @@ def shape_loop():
         elif txtloop_input=="horizontalellipse":
             horizontal_ellipse()
         elif txtloop_input=="ellipse":
-            ellipse_input=simpledialog.askstring("Enter the type of the ellipse:","Which kind of Ellipse do you want me to draw?/nIs it vertical (Major axis: vertical & Minor axis: horizontal) or horizontal(Major axis: horizontal & Minor axis: vertical)?/nType 'vertical' for Vertical Ellipse or 'horizontal' for Horizontal Ellipse: ", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+            ask_ellipse_input=simpledialog.askstring("Enter the type of the ellipse:","Which kind of Ellipse you want me to draw.\nIs it vertical(Major axis:vertical &  Minor axis:horizontal) or horizontal(Major axis:horizontal & Minor axis:vertical)\nType Vertical for Vertical Ellipse or Horizontal for Horizontal Ellipse", parent=dialog_root)
+            ellipse_input=ask_ellipse_input.lower().strip().replace("_"," ").replace(",","").replace(".","").replace(" ", "")
+
+            if ask_ellipse_input is None:
+                user_choice_le=messagebox.askyesno("Cancelled", "You pressed Cancel. Do you want to stop drawing")
+                if user_choice_le:
+                    goodbye_popup()
+                    break
+                else:
+                    continue
 
             if ellipse_input=="vertical":
                 vertical_ellipse()
@@ -759,7 +830,17 @@ def shape_loop():
                 body=f"Error in ellipse input: {ellipse_input}"
                 send_shape_error_report_email()
         elif txtloop_input=="triangle":
-            triangle_input=simpledialog.askstring("Enter the type of triangle:","Which kind of Triangle do you want me to draw?\nEnter the type: ", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
+            ask_triangle_input=simpledialog.askstring("Enter the type of triangle:","Which kind of Triangle you want me to draw?\nEnter the type of triangle you want me to draw", parent=dialog_root)
+            triangle_input=ask_triangle_input.lower().strip().replace("_"," ").replace(",","").replace(".","").replace(" ", "")
+
+            if ask_txtloop_input is None:
+                user_choice_lt=messagebox.askyesno("Cancelled", "You pressed Cancel. Do you want to stop drawing")
+                if user_choice_lt:
+                    goodbye_popup()
+                    break
+                else:
+                    continue
+
             if triangle_input == "rightangledtriangle" or triangle_input == "rightangletriangle" or triangle_input == "righttriangle" or triangle_input == "rightangled" or triangle_input == "rightangle":
                 right_angled_triangle()
             elif triangle_input == "scalenetriangle" or triangle_input=="scalene":
@@ -795,7 +876,7 @@ def shape_loop():
         elif txtloop_input=="concavepentagon" or txtloop_input=="irregularpentagon":
             concave_pentagon()
         elif txtloop_input=="concavehexagon" or txtloop_input=="irregularhexagon":
-            convave_hexagon()
+            concave_hexagon()
         elif txtloop_input=="concaveheptagon" or txtloop_input=="irregularheptagon":
             concave_heptagon()
         elif txtloop_input=="concaveoctagon" or txtloop_input=="irregularoctagon":
@@ -834,21 +915,19 @@ def shape_loop():
             dodecagram()
         elif txtloop_input=="tridecagram":
             tridecagram()
-
-        
         else:
             messagebox.showerror("Invalid Input", "Sorry,I cannot draw it")
             body=f"Error in text loop input: {txtloop_input}"
             send_shape_error_report_email()
+        t.seth(0)
 
-        again =simpledialog.askstring("Enter one of the option:","Do you want me to draw more? Yes or No", parent=dialog_root).lower().strip().replace("_"," ").replace(",","").replace(".","")
-        if again == "yes":
+        again =messagebox.askyesno("Choose one of the option:","Do you want me to draw more? Yes or No")
+        if again:
             continue
-        elif again == "no":
-             goodbye_popup()
-             break
         else:
-            messagebox.showerror("Invalid Input", "Sorry,I do not get it")
+            goodbye_popup()
+            break
+
 
 #Shape_Error_Report
 
@@ -877,7 +956,7 @@ def send_shape_error_report_email():
     receiver = fernet.decrypt(encrypted_receiver).decode()
 
     #Error_report_email
-
+    
     sender_email = sender + "@gmail.com"
     receiver_email = receiver + "@gmail.com"
 
@@ -892,7 +971,6 @@ def send_shape_error_report_email():
         server.starttls()
         server.login(sender_email, app_password)
         server.send_message(msg)
-
 
 def run_tk():
     root.mainloop()
